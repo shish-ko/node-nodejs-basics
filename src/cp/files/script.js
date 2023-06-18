@@ -1,12 +1,11 @@
 const args = process.argv.slice(2);
 
-console.log(`Total number of arguments is ${args.length}`);
-console.log(`Arguments: ${JSON.stringify(args)}`);
+process.send(`Total number of arguments is ${args.length} \n`);
+process.send(`Arguments: ${JSON.stringify(args)}\n`);
 
 const echoInput = (chunk) => {
-    const chunkStringified = chunk.toString();
-    if (chunkStringified.includes('CLOSE')) process.exit(0);
-    process.stdout.write(`Received from master process: ${chunk.toString()}\n`)
+    if (chunk.includes('CLOSE')) process.exit(0);
+    process.send(`Received from master process: ${chunk}\n`)
 };
 
-process.stdin.on('data', echoInput);
+process.on('message', echoInput);
